@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LumiChess · Authentification</title>
+    <link rel="stylesheet" href="styles/app.css" />
+  </head>
+  <body>
+    <div class="page-bg"></div>
+    <main class="auth-page-wrap">
+      <a class="back-link" href="index.html">← Retour accueil</a>
+
+      <section class="auth-page card-glass">
+        <article class="auth-intro panel">
+          <p class="eyebrow">Espace joueur LumiChess</p>
+          <h2>Connexion, inscription ou invité</h2>
+          <p>
+            Entrez dans votre espace personnel pour suivre votre Elo, vos sessions, vos thèmes faibles et vos objectifs.
+            Vous pouvez aussi commencer instantanément en mode invité.
+          </p>
+          <button id="guestBtn" class="primary-btn full">Jouer en invité</button>
+          <p class="muted">Le mode invité crée une session locale identifiable et vous redirige vers le dashboard.</p>
+          <p class="form-feedback" data-form-feedback="guest"></p>
+        </article>
+
+        <article class="panel auth-panel">
+          <div class="auth-tabs" role="tablist">
+            <button id="showLoginBtn" class="tab active" type="button">Connexion</button>
+            <button id="showRegisterBtn" class="tab" type="button">Inscription</button>
+          </div>
+
+          <form id="loginForm" novalidate>
+            <h3>Se connecter</h3>
+            <label>
+              Email ou pseudo
+              <input name="identifier" type="text" required minlength="3" placeholder="demo@lumichess.app" />
+            </label>
+            <label>
+              Mot de passe
+              <input name="password" type="password" required minlength="8" placeholder="••••••••" />
+            </label>
+            <button type="submit" class="primary-btn full">Se connecter</button>
+            <p class="form-feedback" data-form-feedback="login"></p>
+          </form>
+
+          <form id="registerForm" class="hidden" novalidate>
+            <h3>Créer un compte</h3>
+            <label>
+              Pseudo
+              <input name="username" type="text" required minlength="3" maxlength="20" placeholder="LumiRook" />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" required placeholder="email@exemple.com" />
+            </label>
+            <label>
+              Mot de passe
+              <input name="password" type="password" required minlength="8" />
+            </label>
+            <label>
+              Confirmer mot de passe
+              <input name="confirmPassword" type="password" required minlength="8" />
+            </label>
+            <button type="submit" class="primary-btn full">Créer le compte</button>
+            <p class="form-feedback" data-form-feedback="register"></p>
+          </form>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="scripts/auth-page.js"></script>
+  </body>
+</html>

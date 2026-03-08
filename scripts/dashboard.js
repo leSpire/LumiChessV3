@@ -15,15 +15,9 @@ function linePath(values, width = 500, height = 180, padding = 24) {
 
 function buildStoreForMode(mode) {
   if (mode === 'guest') {
-    return {
-      list: getGuests,
-      save: saveGuests
-    };
+    return { list: getGuests, save: saveGuests };
   }
-  return {
-    list: getUsers,
-    save: saveUsers
-  };
+  return { list: getUsers, save: saveUsers };
 }
 
 function updateProfile(mode, profileId, updater) {
@@ -72,20 +66,25 @@ export function renderStats(container, user) {
   const elo = user.eloHistory.at(-1) || 0;
   const bestElo = Math.max(...user.eloHistory);
   const avgAcc = Math.round(user.accuracyHistory.reduce((a, b) => a + b, 0) / user.accuracyHistory.length);
+  const recentProgress = user.eloHistory.length > 1 ? user.eloHistory.at(-1) - user.eloHistory.at(-2) : 0;
 
   container.innerHTML = `
     <article class="stat-card"><p>Elo actuel</p><h5>${elo}</h5></article>
     <article class="stat-card"><p>Meilleur Elo</p><h5>${bestElo}</h5></article>
     <article class="stat-card"><p>Précision moyenne</p><h5>${avgAcc}%</h5></article>
-    <article class="stat-card"><p>Sessions</p><h5>${user.sessions.length}</h5></article>
+    <article class="stat-card"><p>Nombre de sessions</p><h5>${user.sessions.length}</h5></article>
+    <article class="stat-card"><p>Progression récente</p><h5>${recentProgress >= 0 ? '+' : ''}${recentProgress} Elo</h5></article>
     <article class="stat-card stat-card-wide">
       <p>Thèmes faibles détectés</p>
       <div class="weak-list">
         ${user.weakThemes
           .map(
-            (t) => `<div class="weak-theme"><span>${t.label}</span><strong>${t.weakness}%</strong><div class="weak-meter"><span style="width:${t.weakness}%"></span></div></div>`
+            (theme) => `<div class="weak-theme"><span>${theme.label}</span><strong>${theme.weakness}%</strong><div class="weak-meter"><span style="width:${theme.weakness}%"></span></div></div>`
           )
           .join('')}
+      </div>
+      <div class="tag-wrap">
+        ${user.weakThemes.map((theme) => `<span class="tag">${theme.label}</span>`).join('')}
       </div>
     </article>
   `;
@@ -93,11 +92,12 @@ export function renderStats(container, user) {
 
 export function renderSessions(listEl, sessions) {
   if (!sessions.length) {
-    listEl.innerHTML = '<li class="empty">Aucune session pour le moment.</li>';
+    listEl.innerHTML = '<li class="empty-state">Aucune session pour le moment.</li>';
     return;
   }
+
   listEl.innerHTML = sessions
-    .map((s) => `<li><span>${s.date}</span><strong>${s.type}</strong><em>${s.score}</em></li>`)
+    .map((session) => `<li><span>${session.date}</span><strong>${session.type}</strong><em>${session.score}</em></li>`)
     .join('');
 }
 
@@ -108,16 +108,16 @@ export function renderGoals(container, user, onEdit, onDelete) {
   }
 
   container.innerHTML = user.goals
-    .map((g) => {
-      const pct = Math.min(100, Math.round((g.current / g.target) * 100));
-      const status = pct >= 100 ? 'terminé' : g.status;
+    .map((goal) => {
+      const pct = Math.min(100, Math.round((goal.current / goal.target) * 100));
+      const status = pct >= 100 ? 'terminé' : goal.status;
       return `<article class="goal-item">
-        <div class="goal-item-head"><strong>${g.title}</strong><span class="tag">${status}</span></div>
+        <div class="goal-item-head"><strong>${goal.title}</strong><span class="tag">${status}</span></div>
         <div class="progress-bar"><span style="width:${pct}%"></span></div>
-        <div class="goal-meta"><span>${g.current}/${g.target}</span><span>Échéance: ${g.targetDate}</span><span>${pct}%</span></div>
+        <div class="goal-meta"><span>${goal.current}/${goal.target}</span><span>Échéance : ${goal.targetDate}</span><span>${pct}%</span></div>
         <div class="goal-actions">
-          <button class="ghost-btn" data-action="edit" data-id="${g.id}">Modifier</button>
-          <button class="ghost-btn" data-action="delete" data-id="${g.id}">Supprimer</button>
+          <button class="ghost-btn" data-action="edit" data-id="${goal.id}">Modifier</button>
+          <button class="ghost-btn" data-action="delete" data-id="${goal.id}">Supprimer</button>
         </div>
       </article>`;
     })
@@ -130,16 +130,15 @@ export function renderGoals(container, user, onEdit, onDelete) {
 export function upsertGoal(profile, goal) {
   return updateProfile(profile.isGuest ? 'guest' : 'account', profile.id, (targetProfile) => {
     if (goal.id) {
-      targetProfile.goals = targetProfile.goals.map((g) => (g.id === goal.id ? goal : g));
+      targetProfile.goals = targetProfile.goals.map((entry) => (entry.id === goal.id ? goal : entry));
       return;
     }
-
     targetProfile.goals.push({ ...goal, id: crypto.randomUUID(), status: 'en cours' });
   });
 }
 
 export function deleteGoal(profile, goalId) {
   return updateProfile(profile.isGuest ? 'guest' : 'account', profile.id, (targetProfile) => {
-    targetProfile.goals = targetProfile.goals.filter((g) => g.id !== goalId);
+    targetProfile.goals = targetProfile.goals.filter((entry) => entry.id !== goalId);
   });
 }
