@@ -4,8 +4,8 @@ import { register, login, playAsGuest, getCurrentUser } from './auth.js';
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const guestBtn = document.getElementById('guestBtn');
-const showLoginBtn = document.getElementById('showLoginBtn');
-const showRegisterBtn = document.getElementById('showRegisterBtn');
+const toRegisterBtn = document.getElementById('toRegisterBtn');
+const toLoginBtn = document.getElementById('toLoginBtn');
 
 function feedback(name, message, type = '') {
   const el = document.querySelector(`[data-form-feedback="${name}"]`);
@@ -14,40 +14,43 @@ function feedback(name, message, type = '') {
   el.className = `form-feedback ${type}`;
 }
 
-function switchTab(tab) {
-  const isLogin = tab === 'login';
-  loginForm.classList.toggle('hidden', !isLogin);
-  registerForm.classList.toggle('hidden', isLogin);
-  showLoginBtn.classList.toggle('active', isLogin);
-  showRegisterBtn.classList.toggle('active', !isLogin);
+function clearFeedback() {
   feedback('login', '');
   feedback('register', '');
+  feedback('guest', '');
 }
 
-function redirectToProfile() {
-  window.location.href = 'profile.html';
+function switchView(view) {
+  const isLogin = view === 'login';
+  loginForm.classList.toggle('hidden', !isLogin);
+  registerForm.classList.toggle('hidden', isLogin);
+  clearFeedback();
+}
+
+function redirectToHome() {
+  window.location.href = 'index.html';
 }
 
 initStorage();
 
 if (getCurrentUser()) {
-  redirectToProfile();
+  redirectToHome();
 }
 
-showLoginBtn.addEventListener('click', () => switchTab('login'));
-showRegisterBtn.addEventListener('click', () => switchTab('register'));
+toRegisterBtn?.addEventListener('click', () => switchView('register'));
+toLoginBtn?.addEventListener('click', () => switchView('login'));
 
-guestBtn.addEventListener('click', () => {
+guestBtn?.addEventListener('click', () => {
   const result = playAsGuest();
   feedback('guest', result.message, result.ok ? 'success' : 'error');
-  if (result.ok) redirectToProfile();
+  if (result.ok) redirectToHome();
 });
 
-loginForm.addEventListener('submit', (event) => {
+loginForm?.addEventListener('submit', (event) => {
   event.preventDefault();
   const fd = new FormData(loginForm);
   const identifier = String(fd.get('identifier') || '').trim();
-  const password = String(fd.get('password') || '');
+  const password = String(fd.get('password') || '').trim();
 
   if (!identifier || !password) {
     feedback('login', 'Veuillez renseigner tous les champs.', 'error');
@@ -56,15 +59,15 @@ loginForm.addEventListener('submit', (event) => {
 
   const result = login(identifier, password);
   feedback('login', result.message, result.ok ? 'success' : 'error');
-  if (result.ok) redirectToProfile();
+  if (result.ok) redirectToHome();
 });
 
-registerForm.addEventListener('submit', (event) => {
+registerForm?.addEventListener('submit', (event) => {
   event.preventDefault();
   const fd = new FormData(registerForm);
   const payload = Object.fromEntries(fd);
   const result = register(payload);
 
   feedback('register', result.message, result.ok ? 'success' : 'error');
-  if (result.ok) redirectToProfile();
+  if (result.ok) redirectToHome();
 });

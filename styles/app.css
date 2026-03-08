@@ -102,8 +102,7 @@ body {
 .cta-module { display: flex; justify-content: space-between; gap: 18px; align-items: center; }
 
 .primary-btn,
-.ghost-btn,
-.tab {
+.ghost-btn {
   border-radius: 999px;
   padding: 10px 16px;
   font-weight: 700;
@@ -116,23 +115,16 @@ body {
   justify-content: center;
 }
 .primary-btn:hover,
-.ghost-btn:hover,
-.tab:hover { transform: translateY(-1px); }
+.ghost-btn:hover { transform: translateY(-1px); }
 .primary-btn {
   background: linear-gradient(135deg, var(--accent), #c88a55);
   color: #1d140c;
   box-shadow: 0 8px 18px rgba(200, 138, 85, 0.28);
 }
-.ghost-btn,
-.tab {
+.ghost-btn {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   border-color: var(--line);
-}
-.tab.active {
-  color: #ffdcb8;
-  border-color: rgba(220, 166, 109, 0.6);
-  background: rgba(220, 166, 109, 0.15);
 }
 .full { width: 100%; }
 
@@ -163,14 +155,25 @@ body {
   text-decoration: none;
 }
 .auth-page {
-  width: min(1040px, 100%);
+  width: min(980px, 100%);
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
 }
-.auth-intro { background: var(--panel-2); }
-.auth-panel { border-left: 1px solid var(--line); }
-.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.auth-intro { background: var(--panel-2); display: grid; align-content: center; gap: 8px; }
+.auth-panel { border-left: 1px solid var(--line); display: grid; align-content: center; }
+
+.auth-panel h3 { margin: 4px 0 8px; }
+.auth-switch {
+  border: none;
+  background: transparent;
+  color: #c7cfdf;
+  font-size: 0.88rem;
+  justify-self: center;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.auth-switch:hover { color: #f1d4b4; }
 
 form { display: grid; gap: 10px; }
 label { display: grid; gap: 5px; font-size: 0.92rem; color: var(--muted); }
