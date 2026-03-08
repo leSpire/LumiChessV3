@@ -1,15 +1,39 @@
-import { getUsers, saveUsers, saveSession, clearSession, getSession } from './storage.js';
+import {
+  getUsers,
+  saveUsers,
+  saveSession,
+  clearSession,
+  getSession,
+  createGuestSession,
+  getGuests
+} from './storage.js';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function getCurrentUser() {
   const session = getSession();
   if (!session) return null;
-  return getUsers().find((u) => u.id === session) || null;
+
+  if (session.mode === 'account') {
+    const account = getUsers().find((u) => u.id === session.userId);
+    return account ? { ...account, accountType: 'compte' } : null;
+  }
+
+  if (session.mode === 'guest') {
+    const guest = getGuests().find((g) => g.id === session.guestId);
+    return guest ? { ...guest, accountType: 'invité', isGuest: true } : null;
+  }
+
+  return null;
 }
 
 export function logout() {
   clearSession();
+}
+
+export function playAsGuest() {
+  const guest = createGuestSession();
+  return { ok: true, user: { ...guest, accountType: 'invité', isGuest: true }, message: 'Session invité démarrée.' };
 }
 
 export function register(payload) {
@@ -30,9 +54,11 @@ export function register(payload) {
     password,
     createdAt: new Date().toISOString().slice(0, 10),
     bio: 'Nouveau joueur LumiChess',
-    eloHistory: [800, 820],
-    accuracyHistory: [68, 70],
-    sessions: [],
+    eloHistory: [800, 820, 845],
+    accuracyHistory: [68, 70, 73],
+    sessions: [
+      { date: new Date().toISOString().slice(0, 10), type: 'Onboarding', score: 'Profil créé' }
+    ],
     weakThemes: [
       { label: 'Ouvertures', weakness: 56 },
       { label: 'Finales', weakness: 62 }
@@ -42,16 +68,18 @@ export function register(payload) {
 
   users.push(user);
   saveUsers(users);
-  saveSession(user.id);
-  return { ok: true, user, message: 'Compte créé avec succès.' };
+  saveSession({ mode: 'account', userId: user.id });
+  return { ok: true, user: { ...user, accountType: 'compte' }, message: 'Compte créé avec succès.' };
 }
 
 export function login(identifier, password) {
   const users = getUsers();
   const user = users.find(
-    (u) => (u.email.toLowerCase() === identifier.toLowerCase() || u.username.toLowerCase() === identifier.toLowerCase()) && u.password === password
+    (u) =>
+      (u.email.toLowerCase() === identifier.toLowerCase() || u.username.toLowerCase() === identifier.toLowerCase()) &&
+      u.password === password
   );
   if (!user) return { ok: false, message: 'Identifiants invalides.' };
-  saveSession(user.id);
-  return { ok: true, user, message: 'Connexion réussie.' };
+  saveSession({ mode: 'account', userId: user.id });
+  return { ok: true, user: { ...user, accountType: 'compte' }, message: 'Connexion réussie.' };
 }
