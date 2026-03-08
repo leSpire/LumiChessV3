@@ -34,8 +34,9 @@
         <header class="topbar">
           <input class="search" type="search" placeholder="Rechercher une leçon..." />
           <div class="topbar-actions">
-            <a class="ghost-btn" href="auth.html">Connexion</a>
-            <a class="primary-btn" href="profile.html">Espace joueur</a>
+            <span id="homeAccountChip" class="account-chip hidden"></span>
+            <a id="homeAuthBtn" class="ghost-btn" href="auth.html">Connexion</a>
+            <a id="homeProfileBtn" class="primary-btn" href="profile.html">Espace joueur</a>
           </div>
         </header>
 
@@ -47,8 +48,8 @@
               pour apprendre avec une interface premium, élégante et fluide.
             </p>
             <div class="hero-actions">
-              <a class="primary-btn" href="auth.html">Commencer les échecs →</a>
-              <a class="ghost-btn" href="board.html">Tester l’échiquier</a>
+              <a id="heroMainCta" class="primary-btn" href="auth.html">Commencer les échecs →</a>
+              <a id="heroSecondaryCta" class="ghost-btn" href="profile.html">Voir mon profil</a>
             </div>
 
             <div class="quick-cards">
@@ -86,5 +87,7 @@
         </section>
       </main>
     </div>
+
+    <script type="module" src="scripts/index-page.js"></script>
   </body>
 </html>

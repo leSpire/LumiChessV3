@@ -14,37 +14,35 @@
       <section class="auth-page card-glass">
         <article class="auth-intro panel">
           <p class="eyebrow">Espace joueur LumiChess</p>
-          <h2>Connexion, inscription ou invité</h2>
+          <h2>Votre progression commence ici</h2>
           <p>
-            Entrez dans votre espace personnel pour suivre votre Elo, vos sessions, vos thèmes faibles et vos objectifs.
-            Vous pouvez aussi commencer instantanément en mode invité.
+            Connectez-vous pour retrouver vos stats, vos sessions et vos objectifs.
+            Vous pouvez aussi commencer immédiatement en mode invité.
           </p>
-          <button id="guestBtn" class="primary-btn full">Jouer en invité</button>
-          <p class="muted">Le mode invité crée une session locale identifiable et vous redirige vers le dashboard.</p>
-          <p class="form-feedback" data-form-feedback="guest"></p>
+          <p class="muted">Expérience locale, rapide et premium, sans friction.</p>
         </article>
 
         <article class="panel auth-panel">
-          <div class="auth-tabs" role="tablist">
-            <button id="showLoginBtn" class="tab active" type="button">Connexion</button>
-            <button id="showRegisterBtn" class="tab" type="button">Inscription</button>
-          </div>
-
           <form id="loginForm" novalidate>
+            <p class="eyebrow">Connexion</p>
             <h3>Se connecter</h3>
             <label>
-              Email ou pseudo
+              Identifiant (email ou pseudo)
               <input name="identifier" type="text" required minlength="3" placeholder="demo@lumichess.app" />
             </label>
             <label>
               Mot de passe
               <input name="password" type="password" required minlength="8" placeholder="••••••••" />
             </label>
-            <button type="submit" class="primary-btn full">Se connecter</button>
+            <button type="submit" class="primary-btn full">Connexion</button>
+            <button id="guestBtn" type="button" class="ghost-btn full">Jouer en invité</button>
             <p class="form-feedback" data-form-feedback="login"></p>
+            <p class="form-feedback" data-form-feedback="guest"></p>
+            <button id="toRegisterBtn" class="auth-switch" type="button">Je n’ai pas de compte</button>
           </form>
 
           <form id="registerForm" class="hidden" novalidate>
+            <p class="eyebrow">Inscription</p>
             <h3>Créer un compte</h3>
             <label>
               Pseudo
@@ -64,6 +62,7 @@
             </label>
             <button type="submit" class="primary-btn full">Créer le compte</button>
             <p class="form-feedback" data-form-feedback="register"></p>
+            <button id="toLoginBtn" class="auth-switch" type="button">J’ai déjà un compte</button>
           </form>
         </article>
       </section>
