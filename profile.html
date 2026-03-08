@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LumiChess · Profil joueur</title>
+    <link rel="stylesheet" href="styles/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar card-glass">
+        <div class="brand">
+          <div class="brand-logo">♟</div>
+          <div>
+            <h1>LumiChess</h1>
+            <p>Chapitre 1 · Profil joueur</p>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="nav-item" href="index.html">Accueil</a>
+          <a class="nav-item" href="#stats">Statistiques</a>
+          <a class="nav-item" href="#progression">Progression</a>
+          <a class="nav-item" href="#objectifs">Objectifs</a>
+          <a class="nav-item" href="auth.html">Changer de compte</a>
+        </nav>
+
+        <footer class="sidebar-footer">LumiChess · Dashboard personnel</footer>
+      </aside>
+
+      <main class="main-area card-glass">
+        <header class="topbar">
+          <input class="search" type="search" placeholder="Filtrer vos données..." />
+          <div class="topbar-actions">
+            <span id="accountChip" class="account-chip"></span>
+            <button id="logoutBtn" class="ghost-btn">Se déconnecter</button>
+          </div>
+        </header>
+
+        <div class="dashboard-layout">
+          <article class="profile-card card-glass">
+            <div class="avatar" id="profileAvatar"></div>
+            <div>
+              <div class="profile-title-line">
+                <h3 id="profileUsername"></h3>
+                <span id="profileType" class="tag"></span>
+              </div>
+              <p id="profileSince" class="muted"></p>
+              <p id="profileBio" class="muted"></p>
+              <p id="profileFocus"></p>
+              <p id="profileMainGoal" class="profile-goal"></p>
+            </div>
+          </article>
+
+          <section id="stats" class="stats-grid"></section>
+
+          <section id="progression" class="progress-grid">
+            <article class="panel card-glass">
+              <div class="chart-head">
+                <h4>Évolution Elo</h4>
+                <span id="eloDelta" class="trend"></span>
+              </div>
+              <svg id="eloChart" viewBox="0 0 500 180" role="img" aria-label="Courbe Elo"></svg>
+            </article>
+            <article class="panel card-glass">
+              <div class="chart-head">
+                <h4>Évolution précision</h4>
+                <span id="accuracyDelta" class="trend"></span>
+              </div>
+              <svg id="accuracyChart" viewBox="0 0 500 180" role="img" aria-label="Courbe précision"></svg>
+            </article>
+            <article class="panel card-glass">
+              <h4>Historique des sessions</h4>
+              <ul id="sessionList" class="session-list"></ul>
+            </article>
+          </section>
+
+          <section id="objectifs" class="panel card-glass">
+            <div class="panel-head">
+              <h4>Objectifs personnels</h4>
+              <button id="addGoalBtn" class="ghost-btn">Ajouter</button>
+            </div>
+
+            <form id="goalForm" class="goal-form hidden" novalidate>
+              <input name="title" type="text" placeholder="+100 Elo en 3 mois" required minlength="5" />
+              <select name="type" required>
+                <option value="elo">Elo</option>
+                <option value="precision">Précision</option>
+                <option value="volume">Volume</option>
+              </select>
+              <input name="targetDate" type="date" required />
+              <input name="current" type="number" min="0" required placeholder="Progression actuelle" />
+              <input name="target" type="number" min="1" required placeholder="Cible" />
+              <button type="submit" class="primary-btn">Sauvegarder</button>
+              <button type="button" id="cancelGoalBtn" class="ghost-btn">Annuler</button>
+              <p class="form-feedback" data-form-feedback="goal"></p>
+            </form>
+
+            <div id="goalsList" class="goal-list"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="scripts/profile-page.js"></script>
+  </body>
+</html>
