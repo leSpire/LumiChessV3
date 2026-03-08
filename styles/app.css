@@ -271,3 +271,150 @@ svg { width: 100%; height: auto; }
   .goal-form { grid-template-columns: 1fr 1fr; }
   .cta-module { flex-direction: column; align-items: flex-start; }
 }
+
+.board-page { padding: 18px; }
+.board-layout {
+  display: grid;
+  grid-template-columns: minmax(420px, 760px) minmax(320px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.board-card,
+.board-side { padding: 16px; }
+.board-header { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+.board-header h2 { margin: 0; }
+.board-badges { display: grid; gap: 8px; }
+.chip {
+  border-radius: 999px;
+  border: 1px solid rgba(220, 166, 109, 0.45);
+  background: rgba(220, 166, 109, 0.14);
+  color: #f6dfc4;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+.lc-board-shell { width: min(100%, 700px); margin: 0 auto; }
+.lc-board {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  background: #1a1f2e;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+.lc-grid { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); width: 100%; height: 100%; }
+.lc-square {
+  position: relative;
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.lc-square.light { background: #d0b792; }
+.lc-square.dark { background: #7b5a3f; }
+.lc-square:hover { box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.05); }
+.lc-square.selected { box-shadow: inset 0 0 0 3px rgba(232, 183, 126, 0.95); }
+.lc-square.candidate::after {
+  content: '';
+  position: absolute;
+  width: 24%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(20, 22, 26, 0.34);
+}
+.lc-square.last-move { box-shadow: inset 0 0 0 999px rgba(218, 184, 131, 0.3); }
+.lc-square.in-check { box-shadow: inset 0 0 0 999px rgba(255, 86, 86, 0.35); }
+.lc-piece {
+  font-size: clamp(1.8rem, 4.8vw, 3rem);
+  line-height: 1;
+  z-index: 2;
+  pointer-events: auto;
+  user-select: none;
+  transition: transform 130ms ease;
+}
+.lc-piece.white { color: #f7f2e8; text-shadow: 0 1px 0 #403120, 0 0 12px rgba(255, 231, 199, 0.18); }
+.lc-piece.black { color: #1a2232; text-shadow: 0 1px 0 #f4d2b0; }
+.lc-piece:active { transform: scale(0.92); }
+.lc-coords {
+  position: absolute;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+.lc-files {
+  inset-inline: 10px;
+  bottom: 6px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+.lc-files span { text-align: right; }
+.lc-ranks {
+  top: 8px;
+  left: 6px;
+  bottom: 24px;
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+}
+.lc-ranks span { align-self: start; }
+.board-actions { display: flex; gap: 10px; margin-top: 12px; }
+.lc-history {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  max-height: 260px;
+  overflow: auto;
+  display: grid;
+  gap: 6px;
+}
+.lc-history-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.ply-number { color: var(--muted); }
+.ply { color: #f8e5cc; }
+.lc-history-empty { color: var(--muted); }
+.board-field { display: grid; gap: 6px; margin-top: 10px; color: var(--muted); }
+.board-field textarea {
+  width: 100%;
+  resize: vertical;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+.illegal-flash .lc-square.selected { animation: illegalPulse 240ms ease; }
+@keyframes illegalPulse {
+  from { box-shadow: inset 0 0 0 2px rgba(255, 110, 110, 0.95); }
+  to { box-shadow: inset 0 0 0 3px rgba(232, 183, 126, 0.95); }
+}
+.promotion-modal {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(165deg, rgba(20, 24, 34, 0.98), rgba(8, 10, 15, 0.98));
+  color: var(--text);
+  min-width: 300px;
+}
+.promotion-modal::backdrop { background: rgba(0, 0, 0, 0.5); }
+.promotion-choices { display: grid; gap: 8px; }
+.promotion-choices button {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  padding: 10px;
+}
+.promotion-choices button:hover { border-color: rgba(220, 166, 109, 0.7); background: rgba(220, 166, 109, 0.2); }
+
+@media (max-width: 1080px) {
+  .board-layout { grid-template-columns: 1fr; }
+}
