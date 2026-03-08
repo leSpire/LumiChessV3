@@ -36,29 +36,31 @@ export function playAsGuest() {
   return { ok: true, user: { ...guest, accountType: 'invité', isGuest: true }, message: 'Session invité démarrée.' };
 }
 
-export function register(payload) {
-  const { username, email, password, confirmPassword } = payload;
-  if (!username || username.trim().length < 3) return { ok: false, message: 'Pseudo invalide (min 3 caractères).' };
+export function register(payload = {}) {
+  const username = String(payload.username || '').trim();
+  const email = String(payload.email || '').trim().toLowerCase();
+  const password = String(payload.password || '');
+  const confirmPassword = String(payload.confirmPassword || '');
+
+  if (username.length < 3) return { ok: false, message: 'Pseudo invalide (min 3 caractères).' };
   if (!emailRegex.test(email)) return { ok: false, message: 'Email invalide.' };
   if (password.length < 8) return { ok: false, message: 'Mot de passe trop court (min 8).' };
   if (password !== confirmPassword) return { ok: false, message: 'Les mots de passe ne correspondent pas.' };
 
   const users = getUsers();
-  const exists = users.some((u) => u.email.toLowerCase() === email.toLowerCase() || u.username.toLowerCase() === username.toLowerCase());
+  const exists = users.some((u) => u.email.toLowerCase() === email || u.username.toLowerCase() === username.toLowerCase());
   if (exists) return { ok: false, message: 'Compte déjà existant (email ou pseudo).' };
 
   const user = {
     id: crypto.randomUUID(),
-    username: username.trim(),
-    email: email.trim().toLowerCase(),
+    username,
+    email,
     password,
     createdAt: new Date().toISOString().slice(0, 10),
     bio: 'Nouveau joueur LumiChess',
     eloHistory: [800, 820, 845],
     accuracyHistory: [68, 70, 73],
-    sessions: [
-      { date: new Date().toISOString().slice(0, 10), type: 'Onboarding', score: 'Profil créé' }
-    ],
+    sessions: [{ date: new Date().toISOString().slice(0, 10), type: 'Onboarding', score: 'Profil créé' }],
     weakThemes: [
       { label: 'Ouvertures', weakness: 56 },
       { label: 'Finales', weakness: 62 }
@@ -73,12 +75,20 @@ export function register(payload) {
 }
 
 export function login(identifier, password) {
+  const normalizedIdentifier = String(identifier || '').trim().toLowerCase();
+  const normalizedPassword = String(password || '');
+
+  if (!normalizedIdentifier || !normalizedPassword) {
+    return { ok: false, message: 'Veuillez renseigner un identifiant et un mot de passe.' };
+  }
+
   const users = getUsers();
   const user = users.find(
     (u) =>
-      (u.email.toLowerCase() === identifier.toLowerCase() || u.username.toLowerCase() === identifier.toLowerCase()) &&
-      u.password === password
+      (u.email.toLowerCase() === normalizedIdentifier || u.username.toLowerCase() === normalizedIdentifier) &&
+      u.password === normalizedPassword
   );
+
   if (!user) return { ok: false, message: 'Identifiants invalides.' };
   saveSession({ mode: 'account', userId: user.id });
   return { ok: true, user: { ...user, accountType: 'compte' }, message: 'Connexion réussie.' };
