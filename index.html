@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LumiChess · Compte & Profil</title>
+    <link rel="stylesheet" href="styles/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar card-glass">
+        <div class="brand">
+          <div class="brand-logo">♟</div>
+          <div>
+            <h1>LumiChess</h1>
+            <p>Apprends. Grind. Mate.</p>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="nav-item active" href="#accueil">Accueil</a>
+          <a class="nav-item" href="#cours">Cours</a>
+          <a class="nav-item" href="#exercices">Exercices</a>
+          <a class="nav-item" href="#parties">Parties</a>
+          <a class="nav-item" href="#progres">Progrès</a>
+          <a class="nav-item" href="#compte-profil">Compte & profil</a>
+        </nav>
+
+        <footer class="sidebar-footer">LumiChess · v0.2</footer>
+      </aside>
+
+      <main class="main-area card-glass">
+        <header class="topbar">
+          <input class="search" type="search" placeholder="Rechercher une leçon..." />
+          <button id="logoutBtn" class="ghost-btn hidden">Se déconnecter</button>
+        </header>
+
+        <section class="hero" id="accueil">
+          <div>
+            <h2>Apprenez les échecs, <span>progressez à votre rythme.</span></h2>
+            <p>
+              Un tutoriel interactif premium pour construire vos fondamentaux, accélérer votre progression
+              et transformer vos points faibles en forces.
+            </p>
+            <button class="primary-btn">Commencer les échecs</button>
+          </div>
+          <div class="hero-board card-glass">
+            <div class="board-grid" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <section id="compte-profil" class="account-module">
+          <h3>Compte & profil joueur</h3>
+          <p class="section-subtitle">Votre espace personnel, progression et objectifs.</p>
+
+          <div id="authView" class="auth-layout hidden">
+            <article class="panel card-glass">
+              <h4>Connexion</h4>
+              <form id="loginForm" novalidate>
+                <label> Email ou pseudo
+                  <input name="identifier" type="text" required minlength="3" />
+                </label>
+                <label> Mot de passe
+                  <input name="password" type="password" required minlength="8" />
+                </label>
+                <button type="submit" class="primary-btn">Se connecter</button>
+                <p class="form-feedback" data-form-feedback="login"></p>
+              </form>
+            </article>
+
+            <article class="panel card-glass">
+              <h4>Inscription</h4>
+              <form id="registerForm" novalidate>
+                <label> Pseudo
+                  <input name="username" type="text" required minlength="3" maxlength="20" />
+                </label>
+                <label> Email
+                  <input name="email" type="email" required />
+                </label>
+                <label> Mot de passe
+                  <input name="password" type="password" required minlength="8" />
+                </label>
+                <label> Confirmer mot de passe
+                  <input name="confirmPassword" type="password" required minlength="8" />
+                </label>
+                <button type="submit" class="primary-btn">Créer le compte</button>
+                <p class="form-feedback" data-form-feedback="register"></p>
+              </form>
+            </article>
+          </div>
+
+          <div id="dashboardView" class="dashboard-layout hidden">
+            <article class="profile-card card-glass">
+              <div class="avatar" id="profileAvatar"></div>
+              <div>
+                <h4 id="profileUsername"></h4>
+                <p id="profileSince"></p>
+                <p id="profileBio" class="muted"></p>
+                <p id="profileMainGoal"></p>
+              </div>
+            </article>
+
+            <section class="stats-grid" id="statsGrid"></section>
+
+            <section class="progress-grid">
+              <article class="panel card-glass">
+                <h4>Historique Elo</h4>
+                <svg id="eloChart" viewBox="0 0 500 160" role="img" aria-label="Courbe Elo"></svg>
+              </article>
+              <article class="panel card-glass">
+                <h4>Historique précision</h4>
+                <svg id="accuracyChart" viewBox="0 0 500 160" role="img" aria-label="Courbe précision"></svg>
+              </article>
+              <article class="panel card-glass">
+                <h4>Sessions récentes</h4>
+                <ul id="sessionList" class="session-list"></ul>
+              </article>
+            </section>
+
+            <section class="panel card-glass">
+              <div class="panel-head">
+                <h4>Objectifs personnels</h4>
+                <button id="addGoalBtn" class="ghost-btn">Ajouter</button>
+              </div>
+
+              <form id="goalForm" class="goal-form hidden" novalidate>
+                <input name="title" type="text" placeholder="Titre de l'objectif" required minlength="5" />
+                <select name="type" required>
+                  <option value="elo">Elo</option>
+                  <option value="precision">Précision</option>
+                  <option value="volume">Volume</option>
+                </select>
+                <input name="targetDate" type="date" required />
+                <input name="current" type="number" min="0" required placeholder="Progression actuelle" />
+                <input name="target" type="number" min="1" required placeholder="Cible" />
+                <button type="submit" class="primary-btn">Sauvegarder</button>
+                <button type="button" id="cancelGoalBtn" class="ghost-btn">Annuler</button>
+                <p class="form-feedback" data-form-feedback="goal"></p>
+              </form>
+
+              <div id="goalsList" class="goal-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="scripts/app.js"></script>
+  </body>
+</html>
