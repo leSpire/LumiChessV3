@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LumiChess · Compte & Profil</title>
+    <title>LumiChess · Chapitre 1 · Compte & Profil</title>
     <link rel="stylesheet" href="styles/app.css" />
   </head>
   <body>
@@ -18,21 +18,24 @@
         </div>
 
         <nav class="side-nav">
-          <a class="nav-item active" href="#accueil">Accueil</a>
+          <a class="nav-item" href="#accueil">Accueil</a>
           <a class="nav-item" href="#cours">Cours</a>
           <a class="nav-item" href="#exercices">Exercices</a>
           <a class="nav-item" href="#parties">Parties</a>
           <a class="nav-item" href="#progres">Progrès</a>
-          <a class="nav-item" href="#compte-profil">Compte & profil</a>
+          <a class="nav-item active" href="#chapitre-1">Chapitre 1 · Compte & profil</a>
         </nav>
 
-        <footer class="sidebar-footer">LumiChess · v0.2</footer>
+        <footer class="sidebar-footer">LumiChess · v0.3 · Chapter 1 finalisé</footer>
       </aside>
 
       <main class="main-area card-glass">
         <header class="topbar">
           <input class="search" type="search" placeholder="Rechercher une leçon..." />
-          <button id="logoutBtn" class="ghost-btn hidden">Se déconnecter</button>
+          <div class="topbar-actions">
+            <span class="account-chip hidden" id="accountChip"></span>
+            <button id="logoutBtn" class="ghost-btn hidden">Se déconnecter</button>
+          </div>
         </header>
 
         <section class="hero" id="accueil">
@@ -49,19 +52,34 @@
           </div>
         </section>
 
-        <section id="compte-profil" class="account-module">
-          <h3>Compte & profil joueur</h3>
-          <p class="section-subtitle">Votre espace personnel, progression et objectifs.</p>
+        <section id="chapitre-1" class="account-module">
+          <div class="section-head">
+            <h3>Chapitre 1 · Compte / Profil</h3>
+            <p class="section-subtitle">Inscription, connexion, invité, progression, stats et objectifs dans un espace joueur premium.</p>
+          </div>
 
-          <div id="authView" class="auth-layout hidden">
+          <div id="authView" class="auth-shell hidden">
+            <article class="auth-intro panel card-glass">
+              <p class="eyebrow">Espace joueur LumiChess</p>
+              <h4>Connectez-vous ou jouez en invité</h4>
+              <p>
+                Lancez immédiatement votre parcours : créez votre compte pour conserver votre progression,
+                ou démarrez en mode invité pour découvrir l'expérience.
+              </p>
+              <button id="guestBtn" class="ghost-btn cta-guest">Jouer en invité</button>
+              <p class="muted">Astuce : vous pourrez convertir ce mode invité en compte complet plus tard.</p>
+            </article>
+
             <article class="panel card-glass">
               <h4>Connexion</h4>
               <form id="loginForm" novalidate>
-                <label> Email ou pseudo
-                  <input name="identifier" type="text" required minlength="3" />
+                <label>
+                  Email ou pseudo
+                  <input name="identifier" type="text" required minlength="3" placeholder="demo@lumichess.app" />
                 </label>
-                <label> Mot de passe
-                  <input name="password" type="password" required minlength="8" />
+                <label>
+                  Mot de passe
+                  <input name="password" type="password" required minlength="8" placeholder="••••••••" />
                 </label>
                 <button type="submit" class="primary-btn">Se connecter</button>
                 <p class="form-feedback" data-form-feedback="login"></p>
@@ -71,16 +89,20 @@
             <article class="panel card-glass">
               <h4>Inscription</h4>
               <form id="registerForm" novalidate>
-                <label> Pseudo
+                <label>
+                  Pseudo
                   <input name="username" type="text" required minlength="3" maxlength="20" />
                 </label>
-                <label> Email
+                <label>
+                  Email
                   <input name="email" type="email" required />
                 </label>
-                <label> Mot de passe
+                <label>
+                  Mot de passe
                   <input name="password" type="password" required minlength="8" />
                 </label>
-                <label> Confirmer mot de passe
+                <label>
+                  Confirmer mot de passe
                   <input name="confirmPassword" type="password" required minlength="8" />
                 </label>
                 <button type="submit" class="primary-btn">Créer le compte</button>
@@ -93,10 +115,14 @@
             <article class="profile-card card-glass">
               <div class="avatar" id="profileAvatar"></div>
               <div>
-                <h4 id="profileUsername"></h4>
+                <div class="profile-title-line">
+                  <h4 id="profileUsername"></h4>
+                  <span id="profileType" class="tag"></span>
+                </div>
                 <p id="profileSince"></p>
                 <p id="profileBio" class="muted"></p>
-                <p id="profileMainGoal"></p>
+                <p id="profileMainGoal" class="profile-goal"></p>
+                <p id="profileSummary" class="muted"></p>
               </div>
             </article>
 
@@ -104,12 +130,18 @@
 
             <section class="progress-grid">
               <article class="panel card-glass">
-                <h4>Historique Elo</h4>
-                <svg id="eloChart" viewBox="0 0 500 160" role="img" aria-label="Courbe Elo"></svg>
+                <div class="chart-head">
+                  <h4>Historique Elo</h4>
+                  <span id="eloDelta" class="trend"></span>
+                </div>
+                <svg id="eloChart" viewBox="0 0 500 180" role="img" aria-label="Courbe Elo"></svg>
               </article>
               <article class="panel card-glass">
-                <h4>Historique précision</h4>
-                <svg id="accuracyChart" viewBox="0 0 500 160" role="img" aria-label="Courbe précision"></svg>
+                <div class="chart-head">
+                  <h4>Historique précision</h4>
+                  <span id="accuracyDelta" class="trend"></span>
+                </div>
+                <svg id="accuracyChart" viewBox="0 0 500 180" role="img" aria-label="Courbe précision"></svg>
               </article>
               <article class="panel card-glass">
                 <h4>Sessions récentes</h4>
